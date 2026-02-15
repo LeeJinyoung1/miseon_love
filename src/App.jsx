@@ -9,21 +9,22 @@ function App() {
     const colors = ['#ff8787', '#fcc2d7', '#ffdeeb', '#ffffff'];
 
     const frame = () => {
-      // 화면 전체 상단 무작위 위치에서 떨어지도록 변경
-      confetti({
-        particleCount: 1,
-        startVelocity: 0, // 쏘아 올리지 않고 바로 떨어지게 함
-        ticks: 600, // 충분히 오래 살아남아 바닥까지 도달하게 함
-        origin: {
-          x: Math.random(),
-          // 화면 위쪽에서 자연스럽게 시작
-          y: Math.random() - 0.2
-        },
-        colors: colors,
-        gravity: 0.5, // 중력을 조절하여 천천히 떨어지게 함
-        scalar: 0.75, // 꽃잎 크기
-        drift: Math.random() * 2 - 1 // 좌우로 하늘하늘 흔들리는 효과
-      });
+      // 추가로 40% 더 줄이기 위해 확률을 조정 (기존 대비 훨씬 드물게 발생)
+      if (Math.random() > 0.7) {
+        confetti({
+          particleCount: 1,
+          startVelocity: 0,
+          ticks: 600,
+          origin: {
+            x: Math.random(),
+            y: Math.random() - 0.2
+          },
+          colors: colors,
+          gravity: 0.5,
+          scalar: 0.75,
+          drift: Math.random() * 2 - 1
+        });
+      }
 
       requestAnimationFrame(frame);
     };
