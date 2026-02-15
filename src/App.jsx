@@ -1,43 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import './App.css';
 
 function App() {
   const [isOpened, setIsOpened] = useState(false);
 
+  const startPetals = () => {
+    const colors = ['#ff8787', '#fcc2d7', '#ffdeeb', '#ffffff'];
+
+    const frame = () => {
+      // 화면 전체 상단 무작위 위치에서 떨어지도록 변경
+      confetti({
+        particleCount: 1,
+        startVelocity: 0, // 쏘아 올리지 않고 바로 떨어지게 함
+        ticks: 600, // 충분히 오래 살아남아 바닥까지 도달하게 함
+        origin: {
+          x: Math.random(),
+          // 화면 위쪽에서 자연스럽게 시작
+          y: Math.random() - 0.2
+        },
+        colors: colors,
+        gravity: 0.5, // 중력을 조절하여 천천히 떨어지게 함
+        scalar: 0.75, // 꽃잎 크기
+        drift: Math.random() * 2 - 1 // 좌우로 하늘하늘 흔들리는 효과
+      });
+
+      requestAnimationFrame(frame);
+    };
+
+    requestAnimationFrame(frame);
+  };
+
   const handleFlowerClick = () => {
-    // 폭죽 효과 실행
-    const duration = 3 * 1000;
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-    const randomInRange = (min, max) => Math.random() * (max - min) + min;
-
-    const interval = setInterval(function() {
-      const timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) {
-        return clearInterval(interval);
-      }
-
-      const particleCount = 50 * (timeLeft / duration);
-      
-      // 하트와 꽃잎 느낌의 폭죽
-      confetti({
-        ...defaults,
-        particleCount,
-        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-        colors: ['#ff8787', '#fcc2d7', '#ffdeeb', '#ffffff']
-      });
-      confetti({
-        ...defaults,
-        particleCount,
-        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-        colors: ['#ff8787', '#fcc2d7', '#ffdeeb', '#ffffff']
-      });
-    }, 250);
-
-    // 편지 열기
+    startPetals();
     setIsOpened(true);
   };
 
